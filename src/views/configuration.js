@@ -7,6 +7,7 @@ import TypeCongeModal from '../components/modals/TypeCongeModal'
 import DivisionIcon from '../assets/icons/division.png';
 import TypeCongeIcon from '../assets/icons/typeConge.png';
 import StatusIcon from '../assets/icons/status.png';
+import Calendrier from '../components/Calendrier';
 
 const Configuration = (v) => {
 
@@ -24,60 +25,63 @@ const Configuration = (v) => {
             </div>   
             <div className="content">
                 <div className="row">
-                    <div className="col-lg-4">
-                        <div className="card card-primary card-outline">
-                            <div className="card-body">
-                                <h3 className="text-center">
-                                    <img className="text-primary" width="200px" height="100px" src={DivisionIcon}></img>   
-                                </h3>   
-                                <h4 className="card-title text-primary font-weight-bold">Division</h4>   
-                                <p className="card-text text-muted">Créez ou voir les détailles des divisions en cliquent sur le bouton correspondent</p>   
-                                <div className="d-flex justify-content-center">
-                                    <button 
-                                        data-target="#divisionModal"
-                                        data-toggle="modal"
-                                        className="btn btn-outline-info"
-                                    >Créez une division</button>   
-                                    <Link className="nav-link" to="#detail">Voir detailles</Link>   
-                                </div>   
-                            </div>   
-                        </div>   
+                    <div className="col-md-4">
+                        <div class="card card-widget widget-user">
+                            <div class="widget-user-header bg-info">
+                                <h3 class="widget-user-username">Configuration de la division</h3>
+                            </div>
+                            <div class="widget-user-image">
+                                <img class="img-circle elevation-2" src={DivisionIcon} alt="division Avatar" />
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-around">
+                            <button 
+                                data-target="#divisionModal"
+                                data-toggle="modal"
+                                className="btn btn-outline-info"
+                            >Créez une division</button>   
+                            <Link className="nav-link" to="#detail">Voir detailles</Link>   
+                        </div>  
+                    </div>  
+                    <div className="col-md-4">
+                        <div class="card card-widget widget-user">
+                            <div class="widget-user-header bg-success">
+                                <h3 class="widget-user-username">Configuration du status</h3>
+                            </div>
+                            <div class="widget-user-image">
+                                <img class="img-circle elevation-2" src={StatusIcon} alt="division Avatar" />
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-around">
+                            <button className="btn btn-outline-success" onClick={handleInitClick}>Initialisez</button>   
+                            <Link className="nav-link" to="#detail">Voir detailles status</Link>    
+                        </div>  
+                    </div>  
+                    <div className="col-md-4">
+                        <div class="card card-widget widget-user">
+                            <div class="widget-user-header bg-success">
+                                <h3 class="widget-user-username">Configuration des types de Congés</h3>
+                            </div>
+                            <div class="widget-user-image">
+                                <img class="img-circle elevation-2" src={TypeCongeIcon} alt="division Avatar" />
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-around">
+                            <button 
+                                className="btn btn-outline-primary" 
+                                data-target="#typeCongeModal"
+                                data-toggle="modal"
+                            >Créez TypeCongé</button>   
+                            <Link className="nav-link" to="#detail">Voir detailles d'un type de congé</Link>    
+                        </div>  
+                    </div>  
+                </div> 
+                
+                <div className="mt-3 bg-white">
+                    <div className="container">
+                        <Calendrier /> 
                     </div>   
-                    <div className="col-lg-4">
-                        <div className="card card-success card-outline">
-                            <div className="card-body">
-                                <h3 className="text-center">
-                                    <img className="text-primary" width="200px" height="100px" src={StatusIcon}></img>   
-                                </h3>   
-                                <h4 className="card-title text-primary font-weight-bold">Status</h4>   
-                                <p className="card-text text-muted">le module status est par default configurer. cliquez tous simplement sur initialiser pour les enrégistrez </p>   
-                                <div className="d-flex justify-content-center">
-                                    <button className="btn btn-outline-success" onClick={handleInitClick}>Initialisez</button>   
-                                    <Link className="nav-link" to="#detail">Voir detailles status</Link>   
-                                </div>   
-                            </div>   
-                        </div>   
-                    </div>   
-                    <div className="col-lg-4">
-                        <div className="card card-danger card-outline">
-                            <div className="card-body">
-                                <h3 className="text-center">
-                                    <img className="text-primary" width="200px" height="100px" src={TypeCongeIcon}></img>   
-                                </h3>   
-                                <h4 className="card-title text-primary font-weight-bold">Type de Congé</h4>   
-                                <p className="card-text text-muted">Créez ou voir les détailles d'un type de congé </p>   
-                                <div className="d-flex justify-content-center">
-                                    <button 
-                                        className="btn btn-outline-primary" 
-                                        data-target="#typeCongeModal"
-                                        data-toggle="modal"
-                                    >Créez TypeCongé</button>   
-                                    <Link className="nav-link" to="#detail">Voir detailles d'un type de congé</Link>   
-                                </div>   
-                            </div>   
-                        </div>   
-                    </div>   
-                </div>   
+                </div>  
             </div>   
             
         </React.Fragment>
