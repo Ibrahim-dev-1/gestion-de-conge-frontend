@@ -26,54 +26,54 @@ const Configuration = (v) => {
             <div className="content">
                 <div className="row">
                     <div className="col-md-4">
-                        <div class="card card-widget widget-user">
-                            <div class="widget-user-header bg-info">
-                                <h3 class="widget-user-username">Configuration de la division</h3>
+                        <div className="card card-widget widget-user">
+                            <div className="widget-user-header bg-info">
+                                <h3 className="widget-user-username">Configuration de la division</h3>
                             </div>
-                            <div class="widget-user-image">
-                                <img class="img-circle elevation-2" src={DivisionIcon} alt="division Avatar" />
+                            <div className="widget-user-image">
+                                <img className="img-circle p-3 elevation-2" src={DivisionIcon} alt="division Avatar" />
                             </div>
+                            <div className="card-footer d-flex justify-content-around">
+                                <button 
+                                    data-target="#divisionModal"
+                                    data-toggle="modal"
+                                    className="btn btn-info"
+                                >Nouveau</button>   
+                                <Link className="nav-link" to="#detail">Détails division</Link>   
+                            </div>  
                         </div>
-                        <div class="card-footer d-flex justify-content-around">
-                            <button 
-                                data-target="#divisionModal"
-                                data-toggle="modal"
-                                className="btn btn-outline-info"
-                            >Créez une division</button>   
-                            <Link className="nav-link" to="#detail">Voir detailles</Link>   
-                        </div>  
                     </div>  
                     <div className="col-md-4">
-                        <div class="card card-widget widget-user">
-                            <div class="widget-user-header bg-success">
-                                <h3 class="widget-user-username">Configuration du status</h3>
+                        <div className="card card-widget widget-user">
+                            <div className="widget-user-header bg-success">
+                                <h3 className="widget-user-username">Configuration du status</h3>
                             </div>
-                            <div class="widget-user-image">
-                                <img class="img-circle elevation-2" src={StatusIcon} alt="division Avatar" />
+                            <div className="widget-user-image">
+                                <img className="img-circle p-3 elevation-2" src={StatusIcon} alt="division Avatar" />
                             </div>
+                            <div className="card-footer d-flex justify-content-around">
+                                <button className="btn btn-success" onClick={handleInitClick}>Initialisez</button>   
+                                <Link className="nav-link" to="#detail">Détails Status</Link>    
+                            </div>  
                         </div>
-                        <div class="card-footer d-flex justify-content-around">
-                            <button className="btn btn-outline-success" onClick={handleInitClick}>Initialisez</button>   
-                            <Link className="nav-link" to="#detail">Voir detailles status</Link>    
-                        </div>  
                     </div>  
                     <div className="col-md-4">
-                        <div class="card card-widget widget-user">
-                            <div class="widget-user-header bg-success">
-                                <h3 class="widget-user-username">Configuration des types de Congés</h3>
+                        <div className="card card-widget widget-user">
+                            <div className="widget-user-header bg-warning">
+                                <h3 className="widget-user-username">Configuration des types de Congés</h3>
                             </div>
-                            <div class="widget-user-image">
-                                <img class="img-circle elevation-2" src={TypeCongeIcon} alt="division Avatar" />
+                            <div className="widget-user-image">
+                                <img className="img-circle p-3 elevation-2" src={TypeCongeIcon} alt="division Avatar" />
                             </div>
+                            <div className="card-footer d-flex justify-content-around">
+                                <button 
+                                    className="btn btn-warning" 
+                                    data-target="#typeCongeModal"
+                                    data-toggle="modal"
+                                >Nouveau</button>   
+                                <Link className="nav-link " to="#detail">Détails type de congé</Link>    
+                            </div>  
                         </div>
-                        <div class="card-footer d-flex justify-content-around">
-                            <button 
-                                className="btn btn-outline-primary" 
-                                data-target="#typeCongeModal"
-                                data-toggle="modal"
-                            >Créez TypeCongé</button>   
-                            <Link className="nav-link" to="#detail">Voir detailles d'un type de congé</Link>    
-                        </div>  
                     </div>  
                 </div> 
                 

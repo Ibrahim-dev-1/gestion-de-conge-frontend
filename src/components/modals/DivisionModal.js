@@ -2,14 +2,51 @@ import React from 'react'
 
 const DivisionModal = (props) => {
     const nomRef = React.createRef();
+    const [errors, setErrors] = React.useState([]);
+    const [loading, setLoading] = React.useState(false)
 
-    const [state, setState] = React.useState({nom: ""});
-    const [error, setError ] = React.useState();
-    
-    const handleClick = () => {
-        const nom = nomRef.current.value;
-        
-        console.log(nom);
+    const requestBody = (arg)=> {
+        return {
+            query: `
+                mutation{
+                    createDivision(nom: "${arg}"){
+                        Id nom createdAt updatedAt
+                    }
+                }
+            `
+        }
+    }
+
+    const handleClick = async (ev) => {
+        try {
+            ev.preventDefault();
+            setLoading(true);
+           if(!nomRef.current.value){
+               console.log("le nom est undefined");
+               return setErrors([{message: "le nom ne doit pas etre vide"}]);
+           }
+
+           // fetch data
+           const response = await fetch('http://localhost:8888/api',{
+               method: 'post',
+               body: JSON.stringify(requestBody(nomRef.current.value)),
+               headers:{
+                   'Content-Type': 'Application/json'
+               }
+           });
+           const data = await response.json();
+           if(data.errors){
+               setLoading(false)
+               return setErrors(data.errors);
+           }
+
+           setErrors([])
+           setLoading(false);
+           return document.getElementById("closeBtnDiv").click();
+        } catch (err) {
+            setErrors({message: err.message})
+            return console.log(err)
+        }
     }
 
     return (
@@ -23,18 +60,27 @@ const DivisionModal = (props) => {
                     </button>
                 </div>
                 <div className="modal-body">
-                    <form>
+                    {errors.length > 0 && (
+                        errors.map(error => <p key={error.message} className="alert alert-danger">{error.message}</p>)
+                    )}
+                    <form onSubmit={handleClick}>
                         <div className="form-group">
                             <label htmlFor="nom">Entrez le Nom de la division </label>
-                            <input type="text" className="form-control" ref={nomRef} placeholder="Entre le nom" />
+                            <input 
+                                id="nom" 
+                                type="text" 
+                                required 
+                                className="form-control" 
+                                ref={nomRef} placeholder="Entre le nom" />
                         </div>
                     </form>
                     
                 </div>
                 <div className="modal-footer">
-                    <button type="button" className="btn btn-danger" data-dismiss="modal">Fermé</button>
+                    <button type="button" id="closeBtnDiv" className="btn btn-danger" data-dismiss="modal">Fermé</button>
                     <button 
                         type="button" 
+                        id="saveBtnDiv"
                         className="btn btn-outline-info" 
                         onClick={handleClick}
                     >Enrégistrez</button>

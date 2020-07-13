@@ -2,16 +2,16 @@ import React from 'react';
 
 const Calendrier =  (props) => {
     return(
-        <div class="row p-3">
-            <div class="col-md-8">
+        <div className="row p-3">
+            <div className="col-md-8">
                 list des calendrier
             </div>
-            <div class="col-md-4">
-                <div class="card card-outline card-primary">
-                    <div class="card-header">
+            <div className="col-md-4">
+                <div className="card card-outline card-primary">
+                    <div className="card-header">
                         <h3 className="text-center">Enrégistrement des vagues</h3>
                     </div>
-                    <div class="card-header">
+                    <div className="card-header">
                         <form>
                             <div className="form-group">
                                 <label htmlFor="dateDebut">Entrez le date du début</label>
