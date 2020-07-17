@@ -3,11 +3,11 @@ import {NavLink , Link } from 'react-router-dom';
 
 const MainSidebar = () =>{
     return (
-        <aside className="main-sidebar layout-fixed sidebar-dark-primary elevation-4">
-        <Link to="#endregionindex3.html" className="brand-link">
-          <img  alt="AdminLTE Logo" className="brand-image img-circle elevation-3"
+        <aside className="main-sidebar position-fixed sidebar-light-success elevation-5">
+        <Link to="#" className="brand-link">
+          <img  alt="agents" className="brand-image img-circle elevation-3"
                style={{opacity: ".8"}} />
-          <span className="brand-text font-weight-light">GestConge</span>
+          <span className="brand-text font-weight-bold">GestConge</span>
         </Link>
     
         <div className="sidebar"> 
@@ -21,17 +21,19 @@ const MainSidebar = () =>{
           </div>
     
           <nav className="mt-2">
-            <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-              <li className="nav-item has-treeview menu-open">
-                <NavLink to="#" className="nav-link active">
-                  <i className="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                    Dashboard
-                    <i className="right fas fa-angle-left"></i>
-                  </p>
+            <ul className="nav flex-column" data-widget="treeview" role="menu" data-accordion="true">
+              <li className="bg-light">
+                <NavLink to="#" data-target="#agent" data-toggle="collapse" className="nav-link active">
+                   Gestion des agents
                 </NavLink>
                 
+                <div className="collapse" id="agent">
+                  <NavLink to="/dashboard/agents" className="nav-link">
+                    List des agents
+                  </NavLink>
+                </div>
               </li>
+              <hr/>
               <li className="nav-item">
                   <Link to="/dashboard/configuration" className="nav-link">configuration</Link>
               </li>
