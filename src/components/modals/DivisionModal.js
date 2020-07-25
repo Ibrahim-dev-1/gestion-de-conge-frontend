@@ -41,6 +41,7 @@ const DivisionModal = (props) => {
            }
 
            setErrors([])
+           console.log(loading)
            setLoading(false);
            return document.getElementById("closeBtnDiv").click();
         } catch (err) {

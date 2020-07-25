@@ -80,6 +80,11 @@ const Calendrier =  (props) => {
        }
     }
 
+    //handle delete 
+    const handleDelete = () => {
+        console.log("click")
+    }
+
     return(
         <div className="row p-3">
              {errors.length > 0 && (
@@ -96,13 +101,14 @@ const Calendrier =  (props) => {
                 <h4 className="font-weight-bold">Listes des calendriers </h4>    
                 </div>    
                 <div className="card-body">
-                <table className="table table-bordered table-hover">
+                <table className="table table-responsive table-hover">
                   <thead>                  
                     <tr>
-                      <th style={{width: "10px"}}>#</th>
-                      <th>DateDebut</th>
-                      <th>DateFin</th>
-                      <th style={{width: "50px"}}>Date creation</th>
+                      <th className="font-weight-bold"># ID</th>
+                      <th className="font-weight-bold">DateDebut</th>
+                      <th className="font-weight-bold">DateFin</th>
+                      <th className="font-weight-bold">Date creation</th>
+                      <th className="font-weight-bold">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -110,15 +116,43 @@ const Calendrier =  (props) => {
                     datas.map(function(cal){
                         return (
                             <tr key={cal.Id}>
-                                <th>{cal.Id}</th>
-                                <th>{cal.dateDebut}</th>
-                                <th>{cal.dateFin}</th>
-                                <th>{cal.createdAt}</th>
+                                <td>{cal.Id}</td>
+                                <td>{cal.dateDebut}</td>
+                                <td>{cal.dateFin}</td>
+                                <td className="text-muted">{cal.createdAt}</td>
+                                <td className="d-flex justify-content-around">
+                                    <i 
+                                     onClick={async function(){
+                                        try {
+                                            const result = await fetch("http://localhost:8888/api/",
+                                        {
+                                            method: "post",
+                                            body: JSON.stringify({query: `mutation{deleteCalendrier(id: "${cal.Id}")}`}),
+                                            headers: {'Content-Type': 'application/json'}
+                                        }) 
+                                        const data = await result.json();
+                                        if(data.errors)
+                                        return setErrors(data.errors);
+                                        
+                                        console.log(data.data.deleteDivision);
+                                        return fetchDatas();
+                                        } catch (error) {
+                                            console.log(error);
+                                            return setErrors(error);
+                                        }
+                                    }}  
+                                    
+                                    className="fa fa-trash text-danger"></i>
+                                    <i 
+                                        className="fa fa-google">
+                                        
+                                    </i>
+                                </td>
                         </tr>
                     )
                 })           
                   
-                ): (<tr><td className="alert alert-danger">La list est vide </td></tr>)}
+                ): (<tr><td rowSpan="4"  className="alert alert-danger">La list est vide </td></tr>)}
                   </tbody>
                 </table>
               </div>

@@ -9,7 +9,7 @@ const MainHeader = () =>{
             <Link className="nav-link" data-widget="pushmenu" to="/"><i className="fas fa-bars"></i></Link>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
-            <NavLink to="#Acceuli" className="nav-link">Acceuil</NavLink>
+            <NavLink to="/" className="nav-link">Acceuil</NavLink>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
             <NavLink to="#" className="nav-link">Contact</NavLink>

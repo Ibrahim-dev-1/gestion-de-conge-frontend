@@ -11,11 +11,31 @@ import Calendrier from '../components/Calendrier';
 
 const Configuration = (v) => {
    
+    const [errors, setErrors] =  React.useState([])
+    const handleInitClick = async (ev) => {
+       try {
+        ev.preventDefault();
+        // fetch data from database
 
-    // init boutton
-    const handleInitClick = () => {
-        console.log("status is initialize")
-    }   
+        const response = await fetch('http://localhost:8888/api', {
+            method: "POST",
+            body: JSON.stringify({query: `mutation{initStatus}`}),
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        })
+        const data = await response.json();
+        if(data.errors){
+            console.log(errors)
+            return setErrors(data.errors);
+        }
+        setErrors([]);
+        return console.log("initialisation réussit")
+       } catch (error) {
+           console.log(error);
+           return setErrors(error);
+       }
+    }
    
     return (
         <React.Fragment>
@@ -72,7 +92,7 @@ const Configuration = (v) => {
                                     data-target="#typeCongeModal"
                                     data-toggle="modal"
                                 >Nouveau</button>   
-                                <Link className="nav-link " to="#detail">Détails type de congé</Link>    
+                                <Link className="nav-link " to="/dashboard/detailsTypeConge">Détails type de congé</Link>    
                             </div>  
                         </div>
                     </div>  

@@ -42,6 +42,7 @@ const TypeCongeModal = (props) => {
            console.log(data)
            setErrors([])
            setLoading(false);
+           console.log(loading)
            return document.getElementById("closeBtnType").click();
         } catch (err) {
             setErrors([{message: err.message}])

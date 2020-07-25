@@ -3,7 +3,7 @@ import {NavLink , Link } from 'react-router-dom';
 
 const MainSidebar = () =>{
     return (
-        <aside className="main-sidebar position-fixed sidebar-light-success elevation-5">
+        <aside className="main-sidebar position-fixed sidebar-dark-primary elevation-5">
         <Link to="#" className="brand-link">
           <img  alt="agents" className="brand-image img-circle elevation-3"
                style={{opacity: ".8"}} />
@@ -22,7 +22,7 @@ const MainSidebar = () =>{
     
           <nav className="mt-2">
             <ul className="nav flex-column" data-widget="treeview" role="menu" data-accordion="true">
-              <li className="bg-light">
+              <li className="kratos-item">
                 <NavLink to="#" data-target="#agent" data-toggle="collapse" className="nav-link active">
                    Gestion des agents
                 </NavLink>
@@ -30,6 +30,9 @@ const MainSidebar = () =>{
                 <div className="collapse" id="agent">
                   <NavLink to="/dashboard/agents" className="nav-link">
                     List des agents
+                  </NavLink>
+                  <NavLink to="/dashboard/agent/add" className="nav-link">
+                    Ajoutez un agent
                   </NavLink>
                 </div>
               </li>

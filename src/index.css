@@ -8,3 +8,13 @@ body{
     background: #f8f9fa;
     font-size: 1rem;
 }
+
+li.kratos-item{
+    transition:all 0.4s ease-in-out;
+}
+
+li.kratos-item:hover{
+    background: #00000080;
+    border-radius: 3px;
+    box-shadow: 0px 5px 10px black;
+}
