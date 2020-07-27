@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import DivisionModal from '../components/modals/DivisionModal'
 import TypeCongeModal from '../components/modals/TypeCongeModal'
@@ -9,7 +9,7 @@ import TypeCongeIcon from '../assets/icons/typeConge.png';
 import StatusIcon from '../assets/icons/status.png';
 import Calendrier from '../components/Calendrier';
 
-const Configuration = (v) => {
+const Configuration = (props) => {
    
     const [errors, setErrors] =  React.useState([])
     const handleInitClick = async (ev) => {

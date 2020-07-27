@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import '../loading.css';
 
 const DetailsDivision = () => {
 
@@ -26,7 +27,7 @@ const DetailsDivision = () => {
                 return setLoading(false);
             }
             setErrors([]);
-            setLoading(false);
+            
             console.log(data.updateDivision)
             return fetchData();
         } catch (error) {
@@ -38,7 +39,7 @@ const DetailsDivision = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:8888/api/',{
+            const response = await fetch('/',{
                 method: "post",
                 body: JSON.stringify(requestBody),
                 headers:{
@@ -47,7 +48,7 @@ const DetailsDivision = () => {
             })
             const { data } = await response.json();
             setErrors([]);
-            setLoading(false);
+            setTimeout(function(){ setLoading(false); },2000);
             return setDivision(data.divisions);
         } catch (error) {
             console.log(error)
@@ -67,7 +68,7 @@ const DetailsDivision = () => {
             })
         }
             <h3 className="text-center font-weight-bold">List des divisions </h3>
-            {loading ? (<p>loading....</p>):(
+            {loading ? (<p style={{ margin:"0px auto"}} className="lds-dual-ring">loading....</p>):(
                 <div className="card">
                 <div className="card-body p-none m-auto text-center">
                 <table id="pagingTable" className="table table-responsive table-bordered table-striped table-hover">

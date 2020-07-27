@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+import Notification from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css'
+import { createNotification } from '../myFonctions';
 
 const Agent = () => {
 
     const [loading, setLoading] = React.useState(false);
-    const [errors, setErrors] = React.useState([]);
     const [radioHomme, setHomme] = React.useState(true);
     const [radioFemme, setFemme] = React.useState(false);
     const [divisions, setDivision] = React.useState([]);
@@ -13,15 +15,14 @@ const Agent = () => {
         prenom: '',
         email: '',
         fonction:'',
-        cituationMatrimoniale:'',
+        situationMatrimoniale:'',
         sexe:'Homme',
         telephone: '',
         dateNaissance:'',
-        dateAmbauche: '',
+        dateEmbauche: '',
         statusId:'',
         divisionId:''
     });
-
     // handle submit function
     const handleSubmit = (ev) => {
         ev.preventDefault();
@@ -31,35 +32,48 @@ const Agent = () => {
                 query: `
                     mutation{
                         createAgent(input:{
-                            nom: ${agent.nom}
-                            prenom: ${agent.prenom}
-                            email: ${agent.email}
-                            fonction: ${agent.fonction}
-                            situationMatrimoniale: ${agent.cituationMatrimoniale}
-                            sexe: ${agent.sexe}
-                            telephone: ${agent.telephone}
-                            dataNaissance: ${agent.dateNaissance}
-                            dataNaissance: ${agent.dateAmbauche}
-                            statusId: ${agent.statusId}
-                            divisionId: ${agent.divisionId}
+                            nom: "${agent.nom}"
+                            prenom: "${agent.prenom}"
+                            email: "${agent.email}"
+                            fonction: "${agent.fonction}"
+                            situationMatrimoniale: "${agent.situationMatrimoniale}"
+                            sexe: "${agent.sexe}"
+                            telephone: "${agent.telephone}"
+                            dateNaissance: "${agent.dateNaissance}"
+                            dateEmbauche: "${agent.dateEmbauche}"
+                            statusId: "${agent.statusId}"
+                            divisionId: "${agent.divisionId}"
                         }){
                             Id nom
                         }
                     }
                 `
-            })
+            }),
+            headers:{
+                'Content-Type': 'application/json',
+                'Authorisation':'Bearer '
+            }
+            
         }).then(function(response){
             return response.json();
         }).then(function(data){
             if(data.errors){
                 setLoading(false);
-                return setErrors(data.errors);
+                console.log(data.errors)
+                throw data.errors
             }
-            setErrors([]);
-            return console.log("Enrégistrement réuissit");
-        }).catch(function(err){
-            console.log(err);
-            return setErrors([err.message]);
+            setTimeout(function(){return setLoading(false)}, 2000)
+            setAgent({nom: '',prenom:'',sexe:'',fonction:'',situationMatrimoniale:'',telephone:'', divisionId:'', statusId:'',
+        dateNaissance:'',dateEmbauche:'', email:''});
+            return createNotification("Enregistrement", 
+            "success","Enrégistrement réuissit","top-right" );
+        }).catch(function(errs){
+            if(errs.length){
+                errs.map(function(err){
+                    return createNotification("Error d'envoie","danger",err.message,"top-right");
+                })
+            }
+            
         })
     }
     // when component did mount 
@@ -83,14 +97,16 @@ const Agent = () => {
                 }
                 })
                 const data = await response.json();
-                if(data.errors){console.log(data.errors); setDivision([]); setLoading(false); return setErrors(data.errors)}
+                if(data.errors){console.log(data.errors); setDivision([]); setLoading(false); return createNotification("Erreur Fetch", 
+                "danger","Erreur recherche des divisions","top-right" );}
                 setDivision(data.data.divisions);
                 setTimeout(function(){ return setLoading(false)}, 2000);
             } catch (error) {
                 setDivision([]);
                 setLoading(false);
-                console.log(error);
-                return setErrors([error.message]);
+                console.log(error.message)
+                return createNotification("Erreur d'enregistrement", 
+                "danger","Erreur d'envoie" ,"top-right" );
             }
         }
         
@@ -108,19 +124,24 @@ const Agent = () => {
                     }
                     })
                     const data = await response.json();
-                    if(data.errors){console.log(data.errors); setStatus([]) ; setLoading(false); return setErrors(data.errors)}
+                    if(data.errors){console.log(data.errors); setStatus([]) ; setLoading(false);
+                        return createNotification("Erreur de Recherche", 
+                "danger","Erreur de recherche des donnés dans la base de donnée","top-right" );
+                    }
                     setStatus(data.data.status);
                     setTimeout(function(){ return setLoading(false)}, 2000);
                 } catch (error) {
                     setLoading(false);
                     setStatus([])
-                    console.log(error);
-                    return setErrors([error.message]);
+                return createNotification("Erreur de Fetch", 
+                "danger","Erreur des status dans la base de donné","top-right" );
+                    
                 }
             }
 
 
     return <div className="container">
+            <Notification  />
             <h4 className="text-center font-weight-bold">Enrégistrement d'un Agent </h4>
     
     <div className="card border-top border-primary">
@@ -193,8 +214,8 @@ const Agent = () => {
                         type="text" 
                         className="form-control" 
                         id="cituation" placeholder="La cituation matrimoniale" 
-                        value={agent.cituationMatrimoniale}
-                        onChange={function(ev){ return setAgent({...agent,cituationMatrimoniale: ev.target.value})}} 
+                        value={agent.situationMatrimoniale}
+                        onChange={function(ev){ return setAgent({...agent,situationMatrimoniale: ev.target.value})}} 
                         required 
                     />
                 </div>
@@ -206,7 +227,7 @@ const Agent = () => {
                             id="femme" 
                             className="custom-control-input"
                             checked={radioFemme}
-                            onClick={function(ev){
+                            onChange={function(ev){
                                 setHomme(!radioHomme)
                                 setFemme(!radioFemme)
                                 console.log("femme:",radioFemme);
@@ -225,7 +246,7 @@ const Agent = () => {
                             name="radionHomme" 
                             className="custom-control-input"
                             checked={radioHomme}
-                            onClick={function(){
+                            onChange={function(){
                                 setHomme(!radioHomme)
                                 setFemme(!radioFemme)
                                 if(!radioHomme){
@@ -288,8 +309,8 @@ const Agent = () => {
                                         type="date" 
                                         required
                                         className="form-control" 
-                                        value={agent.dateAmbauche}
-                                        onChange={function(ev){ return setAgent({...agent,dateAmbauche: ev.target.value})}}
+                                        value={agent.dateEmbauche}
+                                        onChange={function(ev){ return setAgent({...agent,dateEmbauche: ev.target.value})}}
                                         />
                                 </div>
                             </div>

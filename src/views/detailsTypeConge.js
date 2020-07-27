@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import '../loading.css';
 
 const DetailsTypeConge = () => {
 
@@ -23,7 +24,7 @@ const DetailsTypeConge = () => {
             })
             const { data } = await response.json();
             setErrors([]);
-            setLoading(false);
+            setTimeout(function(){ setLoading(false); },2000);
             return setTypeConge(data.typeConges);
         } catch (error) {
             console.log(error)
@@ -38,7 +39,7 @@ const DetailsTypeConge = () => {
     const handleSubmit = async function(ev){
        try {
         ev.preventDefault();
-        const result = await fetch("http://localhost:8888/api/",
+        const result = await fetch("/",
         {
             method: "post",
             body: JSON.stringify({query: `mutation{
@@ -104,7 +105,7 @@ const DetailsTypeConge = () => {
             </div>
 
             <h3 className="text-center font-weight-bold">Listes des types de Congés </h3>
-            {loading ? (<p>loading....</p>):(<div className="card border-top border-success">
+            {loading ? (<p style={{ margin:"0px auto"}} className="lds-dual-ring">loading....</p>):(<div className="card border-top border-success">
                 <div className="card">
                 <div className="card-body text-center">
                 <table className="table table-responsive table-striped table-hover">

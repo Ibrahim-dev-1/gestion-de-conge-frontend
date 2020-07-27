@@ -3,7 +3,7 @@ import Routes from '../routes';
 
 const ContentWrapper = () =>{
     return (
-        <div className="content-wrapper" style={{minHeight: "1200.88px"}} >
+        <div className="content-wrapper kratos-content-wrapper" style={{minHeight: "1200.88px"}} >
             <Routes />
         </div>
     )

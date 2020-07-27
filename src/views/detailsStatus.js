@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import '../loading.css';
 
 const DetailsStatus = () => {
 
@@ -23,7 +24,7 @@ const DetailsStatus = () => {
             const { data } = await response.json();
             console.log(data);
             setErrors([]);
-            setLoading(false);
+            setTimeout(function(){ setLoading(false); },2000);
             return setStatus(data.status);
         } catch (error) {
             console.log(error)
@@ -47,7 +48,7 @@ const DetailsStatus = () => {
                  })
             }
             <h3 className="text-center font-weight-bold">List des Status </h3>
-            {loading ? (<p>loading....</p>):(
+            {loading ? (<p style={{ margin:"0px auto"}} className="lds-dual-ring">loading....</p>):(
                 <table id="pagingTable" className="table  table-bordered table-striped table-hover">
                 <thead>
                 <tr>
