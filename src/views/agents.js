@@ -120,6 +120,7 @@ const Agents = () => {
                                 <Link className="fa fa-eye nav-link" to={"/dashboard/agentDetails/" + agent.Id } />
                                     {/* <i className="fa fa-eye"aria-hidden="true"></i> */}
                                 <i 
+                                        
                                         onClick={handleDeteleClick}
                                         className="text-danger fa fa-trash"
                                         aria-hidden="true"

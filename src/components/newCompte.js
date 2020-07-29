@@ -7,8 +7,8 @@ const NewCompte =  () => {
     
     const handleSubmit = (ev) => {
         ev.preventDefault();
-        const email = emailRef.current;
-        const mdp = passwordRef.current;
+        const email = emailRef.current.value;
+        const mdp = passwordRef.current.value;
         if(email === ''|| mdp === '')
             return console.log("vous devez remplire les champs avant d'envoyé les informations");
         
@@ -16,7 +16,7 @@ const NewCompte =  () => {
             method: 'POST',
             body: JSON.stringify({query:`
             mutation{
-                createCompte(input:{ email: "${email}" , password: "${mdp}"})
+                createCompte(input:{ email: "${email}" , password: "${mdp}"}){Id}
             }
             `}), 
             headers:{
