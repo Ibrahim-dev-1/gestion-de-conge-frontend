@@ -30,14 +30,17 @@ const DetailsAgent = (props) => {
         try {
             const response = await fetch('/', {
                 method: 'POST',
-                body: {
-                    query: ` query{findAgent(id: "${paramsId.id}")}`
-                },
+                body: JSON.stringify({
+                    query: ` query{findAgent(id: "${paramsId.id}"){
+                        nom prenom sexe fonction situationMatrimoniale
+                    }}`
+                }),
                 headers: {
                     'Content-Type': 'Application/json',
                     'Authorization': 'Bearer '+ sessionStorage.getItem("token")
                 }
             })
+            console.log(response);
             const data  = await response.json();
             if(data.errros)
                 throw data.errors;
@@ -54,7 +57,8 @@ const DetailsAgent = (props) => {
     }
 
     useEffect(() => {
-
+        fetchDatas();
+        console.log(agent);
     }, []);
     return <div>
                 Tous les informations sur un agents

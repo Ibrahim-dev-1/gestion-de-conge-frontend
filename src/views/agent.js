@@ -51,7 +51,7 @@ const Agent = () => {
             }),
             headers:{
                 'Content-Type': 'application/json',
-                'Authorisation':'Bearer '
+                'Authorization':'Bearer '+ sessionStorage.getItem("token")
             }
             
         }).then(function(response){

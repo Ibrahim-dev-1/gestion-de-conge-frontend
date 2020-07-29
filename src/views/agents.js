@@ -92,8 +92,6 @@ const Agents = () => {
     return(
        <React.Fragment>
             <div className="container">
-
-            <DetailsAgent />
             <Notification />
                 <h3 className="text-center font-weight-bold">List des Agents </h3>
                 {loading ? (<p style={{ margin:"0px auto"}} className="lds-dual-ring"></p>):(
