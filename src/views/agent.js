@@ -367,7 +367,7 @@ const Agent = () => {
                 </div>
                 <div className="form-group d-flex justify-content-end"> 
                     <button type="button" className="btn btn-danger mr-3">Annulez</button>
-                    <button type="submit" className="btn btn-outline-success">Enrégistrez</button>
+                    <input type="submit" className="btn btn-outline-success" value="Enrégistrez" />
                 </div>
 
             </form>

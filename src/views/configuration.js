@@ -2,11 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import DivisionModal from '../components/modals/DivisionModal'
 import TypeCongeModal from '../components/modals/TypeCongeModal'
+import './custumButton.css';
 
 // import icons
-import DivisionIcon from '../assets/icons/division.png';
-import TypeCongeIcon from '../assets/icons/typeConge.png';
-import StatusIcon from '../assets/icons/status.png';
 import Calendrier from '../components/Calendrier';
 
 const Configuration = (props) => {
@@ -47,54 +45,39 @@ const Configuration = (props) => {
             <div className="content">
                 <div className="row">
                     <div className="col-md-4">
-                        <div className="card card-widget widget-user">
-                            <div className="widget-user-header bg-info">
-                                <h4 className="widget-user-username">Configuration de la division</h4>
+                            <div className="p-4 border rounded bg-info">
+                                <h4 className="font-weight-bold text-center">Configuration de la division</h4>
+                                <div className="d-flex justify-content-around">
+                                    <button 
+                                        data-target="#divisionModal"
+                                        data-toggle="modal"
+                                        className="kratosButtonDivision"
+                                    >Nouveau</button>   
+                                    <Link className="kratosButtonDivision" to="/dashboard/detailsDivision">Détails division</Link>   
+                                </div>  
                             </div>
-                            <div className="widget-user-image">
-                                <img className="img-circle p-3 elevation-2" src={DivisionIcon} alt="division Avatar" />
-                            </div>
-                            <div className="card-footer d-flex justify-content-around">
-                                <button 
-                                    data-target="#divisionModal"
-                                    data-toggle="modal"
-                                    className="btn btn-info"
-                                >Nouveau</button>   
-                                <Link className="nav-link" to="/dashboard/detailsDivision">Détails division</Link>   
-                            </div>  
-                        </div>
                     </div>  
                     <div className="col-md-4">
-                        <div className="card card-widget widget-user">
-                            <div className="widget-user-header bg-success">
-                                <h4 className="widget-user-username">Configuration du status</h4>
+                            <div className="p-4 bg-success  border rounded">
+                                <h4 className="font-weight-bold text-center">Configuration du status</h4>
+                                <div className="d-flex justify-content-around text-light">
+                                    <button className="kratosButtonDivision" onClick={handleInitClick}>Initialisez</button>   
+                                    <Link className="kratosButtonDivision" to="/dashboard/detailsStatus">Détails Status</Link>    
+                                </div>  
                             </div>
-                            <div className="widget-user-image">
-                                <img className="img-circle p-3 elevation-2" src={StatusIcon} alt="division Avatar" />
-                            </div>
-                            <div className="card-footer d-flex justify-content-around">
-                                <button className="btn btn-success" onClick={handleInitClick}>Initialisez</button>   
-                                <Link className="nav-link" to="/dashboard/detailsStatus">Détails Status</Link>    
-                            </div>  
-                        </div>
                     </div>  
                     <div className="col-md-4">
-                        <div className="card card-widget widget-user">
-                            <div className="widget-user-header bg-warning">
-                                <h4 className="widget-user-username">Configuration des types de Congés</h4>
+                            <div className="text-center border rounded p-4 bg-warning">
+                                <h4 className="font-weight-bold text-center">Config Types de Congés</h4>
+                                <div className="d-flex justify-content-around">
+                                    <button 
+                                        className="kratosButtonDivision" 
+                                        data-target="#typeCongeModal"
+                                        data-toggle="modal"
+                                    >Nouveau</button>   
+                                    <Link className="kratosButtonDivision" to="/dashboard/detailsTypeConge">Détails type de congé</Link>    
+                                </div>  
                             </div>
-                            <div className="widget-user-image">
-                                <img className="img-circle p-3 elevation-2" src={TypeCongeIcon} alt="division Avatar" />
-                            </div>
-                            <div className="card-footer d-flex justify-content-around">
-                                <button 
-                                    className="btn btn-warning" 
-                                    data-target="#typeCongeModal"
-                                    data-toggle="modal"
-                                >Nouveau</button>   
-                                <Link className="nav-link " to="/dashboard/detailsTypeConge">Détails type de congé</Link>    
-                            </div>  
-                        </div>
                     </div>  
                 </div> 
                 

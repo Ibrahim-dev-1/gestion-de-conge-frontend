@@ -27,12 +27,8 @@ const NewCompte =  () => {
         }).then(function(data){
             if(data.errors)
                 throw data.errors;
-
-            mdp = '';
-            email = '';
-            console.log(data.data);
-            createNotification("Creation de compte", "success","Votre à été créé avec success...","top-right");
-            return document.getElementById("closeKratosBtn").click();
+            document.getElementById("closeKratosBtn").click();
+            return createNotification("Creation de compte", "success","Votre à été créé avec success...","top-right");
         }).catch(function(errors){
             if(errors.length > 0){
                 errors.map(function(err){

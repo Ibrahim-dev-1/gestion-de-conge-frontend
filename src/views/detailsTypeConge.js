@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import '../loading.css';
+import { createNotification}  from '../myFonctions';
+import Notification from 'react-notifications-component';
 
 const DetailsTypeConge = () => {
 
     const [typeConges, setTypeConge] = React.useState([]);
-    const [errors, setErrors] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const [currentType, setCurrent] = React.useState({Id: '', nom: '', nbrJrMax: ''});
 
@@ -15,21 +16,28 @@ const DetailsTypeConge = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:8888/api/',{
-                method: "post",
+            const response = await fetch('/',{
+                method: "POST",
                 body: JSON.stringify(requestBody),
                 headers:{
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'Application/json',
+                    'Authorization':'Bearer '+ sessionStorage.getItem("token")
                 }
             })
-            const { data } = await response.json();
-            setErrors([]);
-            setTimeout(function(){ setLoading(false); },2000);
-            return setTypeConge(data.typeConges);
-        } catch (error) {
-            console.log(error)
+            const data = await response.json();
+            if(data.errors)
+                throw data.errors;
+            
+            setTimeout(function(){ setLoading(false);},2000);
+            return setTypeConge(data.data.typeConges);
+        } catch (errors) {
             setLoading(false);
-            return setErrors([error.message]);
+            if(errors.length > 0 ){
+                return errors.map(function(err){
+                    return createNotification("Erreur de Recherche des types de congés ", "danger", err.message, "top-left");
+                })
+            }
+            return ;
         }
     }
     useEffect(function(){
@@ -45,31 +53,31 @@ const DetailsTypeConge = () => {
             body: JSON.stringify({query: `mutation{
                 updateTypeConge(id: "${currentType.Id}", input: { nom: "${currentType.nom}" , nbrJrMax: ${currentType.nbrJrMax}})
             }`}),
-            headers: {'Content-Type': 'application/json'}
+            headers: {'Content-Type': 'Application/json', 'Authorization': 'Bearer '+ sessionStorage.getItem("token")}
         }) 
         const data = await result.json();
         if(data.errors)
-            return setErrors(data.errors);
+            throw data.errors;
         
-        console.log(data.data.updateTypeConge);
-        setErrors([]);
-
         document.querySelector("#updateBtn").click();
+        createNotification("Mise à jour ", "success", "mise à jour réussit ", "top-right");
         return fetchData();
            
-       } catch (error) {
-           console.log(error);
-           return setErrors(error);
+       } catch (errors) {
+        setLoading(false);
+        if(errors.length > 0 ){
+            return errors.map(function(err){
+                return createNotification("Erreur de Mise à jour types de congés ", "danger", err.message, "top-left");
+            })
+        }
+        return ;
        }
     }
 
     return(
         <div className="container">
             
-            {errors && errors.map(function(err){
-                return <p key={err.message} className="alert alert-danger">{err.message}</p>
-                 })
-            }
+            <Notification />
             <div id="typeCongeCollapse"  className="collapse mb-3">
                 <div  className="container">
                 <h3 className="text-center font-weight-bold">Metre à jour un type de congé</h3>
@@ -105,72 +113,72 @@ const DetailsTypeConge = () => {
             </div>
 
             <h3 className="text-center font-weight-bold">Listes des types de Congés </h3>
-            {loading ? (<p style={{ margin:"0px auto"}} className="lds-dual-ring">loading....</p>):(<div className="card border-top border-success">
-                <div className="card">
-                <div className="card-body text-center">
-                <table className="table table-responsive table-striped table-hover">
-                <thead>
-                <tr>
-                    <th className="font-weight-bold">Id</th>
-                    <th className="font-weight-bold">Nom</th>
-                    <th className="font-weight-bold">Nbrs Jrs Max</th>
-                    <th className="font-weight-bold">CreatedAt</th>
-                    <th className="font-weight-bold">UpdatedAt</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                { typeConges.length > 0 ? (
-                    typeConges.map(function(typeConge){
-                    return (
-                        <tr key={typeConge.Id}>
-                            <td>{typeConge.Id}</td>
-                            <td className="font-weight-bold">{typeConge.nom}</td>
-                            <td>{typeConge.nbrJrMax}</td>
-                            <td className="text-muted">{typeConge.createdAt}</td>
-                            <td className="text-muted">{typeConge.updatedAt}</td>
-                            <td className="d-flex justify-content-around">
-                                <i 
-                                   onClick={async function(){
-                                        try{
-                                            const result = await fetch("http://localhost:8888/api/",
-                                            {
-                                                method: "post",
-                                                body: JSON.stringify({query: `mutation{deleteTypeConge(id: "${typeConge.Id}")}`}),
-                                                headers: {'Content-Type': 'application/json'}
-                                            }) 
-                                            const data = await result.json();
-                                            if(data.errors)
-                                                return setErrors(data.errors);
-                                            
-                                            console.log(data.data.deleteTypeConge);
-                                            return fetchData();
-                                        }catch(err){
-                                            console.log(err);
-                                            return setErrors(err);
-                                        }
-                                    }} 
-                                    className="fa fa-trash text-danger" style={{ fontSize: "1.3rem"}}></i>
-                                <i 
-                                    className="fa fa-google text-success"
-                                    data-toggle="collapse"
-                                    data-target="#typeCongeCollapse"
-                                    id="updateBtn"
-                                    onClick={function(){
-                                        return setCurrent({Id: typeConge.Id , nom: typeConge.nom, nbrJrMax: typeConge.nbrJrMax});
-                                    }}
-                                >update</i>
-                            </td>
+            {loading ? (<div style={{ margin:"0px auto"}} className="lds-dual-ring"></div>):(
+                <table className="table border table-hover">
+                    <thead>
+                        <tr>
+                            <th className="font-weight-bold">Id</th>
+                            <th className="font-weight-bold">Nom</th>
+                            <th className="font-weight-bold">Nbrs Jrs Max</th>
+                            <th className="font-weight-bold">CreatedAt</th>
+                            <th className="font-weight-bold">UpdatedAt</th>
+                            <th>Actions</th>
                         </tr>
-                    )
-                })           
-                  
-                ): (<tr className="text-danger"><td>liste vide </td></tr>)}
-                </tbody>
-              </table>
-                </div>
-                </div>
-            </div>)}
+                    </thead>
+                    <tbody>
+                    { typeConges.length > 0 ? (
+                        typeConges.map(function(typeConge){
+                        return (
+                            <tr key={typeConge.Id}>
+                                <td>{typeConge.Id}</td>
+                                <td className="font-weight-bold">{typeConge.nom}</td>
+                                <td>{typeConge.nbrJrMax}</td>
+                                <td className="text-muted">{typeConge.createdAt}</td>
+                                <td className="text-muted">{typeConge.updatedAt}</td>
+                                <td className="d-flex justify-content-around">
+                                    <i 
+                                    onClick={async function(){
+                                            try{
+                                                const result = await fetch("/",
+                                                {
+                                                    method: "post",
+                                                    body: JSON.stringify({query: `mutation{deleteTypeConge(id: "${typeConge.Id}")}`}),
+                                                    headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer '+ sessionStorage.getItem("token")}
+                                                }) 
+                                                const data = await result.json();
+                                                if(data.errors)
+                                                    throw data.errors;
+                                                
+                                                createNotification("Suppression", "success", "Supprèssion réuissit...", "top-right");
+                                                return fetchData();
+                                            }catch(errors){
+                                                if(errors.length > 0 ){
+                                                    return errors.map(function(err){
+                                                        return createNotification("Erreur  de supprèssion", "danger", err.message, "top-right");
+                                                    })
+                                                }
+                                                return ;
+                                            }
+                                        }} 
+                                        className="fa fa-trash text-danger" style={{ fontSize: "1.3rem"}}></i>
+                                    <i 
+                                        className="fa fa-google text-success"
+                                        data-toggle="collapse"
+                                        data-target="#typeCongeCollapse"
+                                        id="updateBtn"
+                                        onClick={function(){
+                                            return setCurrent({Id: typeConge.Id , nom: typeConge.nom, nbrJrMax: typeConge.nbrJrMax});
+                                        }}
+                                    >update</i>
+                                </td>
+                            </tr>
+                        )
+                    })           
+                    
+                    ): (<tr className="text-danger"><td>liste vide </td></tr>)}
+                    </tbody>
+                </table>
+            )}
 
         </div>
     )

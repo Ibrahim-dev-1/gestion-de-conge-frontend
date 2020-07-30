@@ -37,7 +37,10 @@ const MainSidebar = () =>{
                 </div>
               </li>
               <hr/>
-              <li className="nav-item">
+              <li className="kratos-item">
+                  <Link to="/congeLayout" className="nav-link">Demande de conge</Link>
+              </li>
+              <li className="kratos-item">
                   <Link to="/dashboard/configuration" className="nav-link">configuration</Link>
               </li>
                        

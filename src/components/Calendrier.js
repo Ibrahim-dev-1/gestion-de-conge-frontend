@@ -15,7 +15,7 @@ const Calendrier =  (props) => {
                 query: ` query{calendriers{Id dateDebut dateFin createdAt updatedAt }}`
             }
             setLoading(true);
-            const response = await fetch('http://localhost:8888/api/',{
+            const response = await fetch('/',{
                 method: "post",
                 body: JSON.stringify(queryBody),
                 headers:{
@@ -59,11 +59,12 @@ const Calendrier =  (props) => {
         ev.preventDefault();
         // fetch data from database
 
-        const response = await fetch('http://localhost:8888/api', {
+        const response = await fetch('/', {
             method: "POST",
             body: JSON.stringify(requestBody(dateDebutRef.current.value, dateFinRef.current.value)),
             headers:{
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ sessionStorage.getItem("token")
             }
         })
         const data = await response.json();
@@ -80,10 +81,7 @@ const Calendrier =  (props) => {
        }
     }
 
-    //handle delete 
-    const handleDelete = () => {
-        console.log("click")
-    }
+
 
     return(
         <div className="row p-3">
@@ -96,76 +94,60 @@ const Calendrier =  (props) => {
                     <span className="sr-only">Loading...</span>
                 </div>
             ):(
-            <div className="card border-top border-primary">
-                <div className="card-header">
-                <h4 className="font-weight-bold">Listes des calendriers </h4>    
-                </div>    
-                <div className="card-body">
-                <table className="table table-responsive table-hover">
-                  <thead>                  
-                    <tr>
-                      <th className="font-weight-bold"># ID</th>
-                      <th className="font-weight-bold">DateDebut</th>
-                      <th className="font-weight-bold">DateFin</th>
-                      <th className="font-weight-bold">Date creation</th>
-                      <th className="font-weight-bold">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                  { datas.length > 0 ? (
-                    datas.map(function(cal){
-                        return (
-                            <tr key={cal.Id}>
-                                <td>{cal.Id}</td>
-                                <td>{cal.dateDebut}</td>
-                                <td>{cal.dateFin}</td>
-                                <td className="text-muted">{cal.createdAt}</td>
-                                <td className="d-flex justify-content-around">
-                                    <i 
-                                     onClick={async function(){
-                                        try {
-                                            const result = await fetch("http://localhost:8888/api/",
-                                        {
-                                            method: "post",
-                                            body: JSON.stringify({query: `mutation{deleteCalendrier(id: "${cal.Id}")}`}),
-                                            headers: {'Content-Type': 'application/json'}
-                                        }) 
-                                        const data = await result.json();
-                                        if(data.errors)
-                                        return setErrors(data.errors);
-                                        
-                                        console.log(data.data.deleteDivision);
-                                        return fetchDatas();
-                                        } catch (error) {
-                                            console.log(error);
-                                            return setErrors(error);
-                                        }
-                                    }}  
-                                    
-                                    className="fa fa-trash text-danger"></i>
-                                    <i 
-                                        className="fa fa-google">
-                                        
-                                    </i>
-                                </td>
+                <div>
+                    <h4 className="font-weight-bold mb-3">Listes des calendriers </h4>    
+                    <table className="table  table-bordered table-responsive table-hover">
+                    <thead>                  
+                        <tr>
+                        <th className="font-weight-bold"># ID</th>
+                        <th className="font-weight-bold">DateDebut</th>
+                        <th className="font-weight-bold">DateFin</th>
+                        <th className="font-weight-bold">Date creation</th>
+                        <th className="font-weight-bold">Actions</th>
                         </tr>
-                    )
-                })           
-                  
-                ): (<tr><td rowSpan="4"  className="alert alert-danger">La list est vide </td></tr>)}
-                  </tbody>
-                </table>
-              </div>
-              {/* <div className="card-footer clearfix">
-                <ul className="pagination pagination-sm m-0 float-right">
-                  <li className="page-item"><NavLink className="page-link" to="#">&laquo;</NavLink></li>
-                  <li className="page-item"><NavLink className="page-link" to="#">2</NavLink></li>
-                  <li className="page-item"><NavLink className="page-link" to="#">1</NavLink></li>
-                  <li className="page-item"><NavLink className="page-link" to="#">3</NavLink></li>
-                  <li className="page-item"><NavLink className="page-link" to="#">&raquo;</NavLink></li>
-                </ul>
-              </div> */}
-            </div>
+                    </thead>
+                    <tbody>
+                    { datas.length > 0 ? (
+                        datas.map(function(cal){
+                            return (
+                                <tr key={cal.Id}>
+                                    <td>{cal.Id}</td>
+                                    <td>{cal.dateDebut}</td>
+                                    <td>{cal.dateFin}</td>
+                                    <td className="text-muted">{cal.createdAt}</td>
+                                    <td className="d-flex justify-content-around">
+                                        <i 
+                                        onClick={async function(){
+                                            try {
+                                                const result = await fetch("/",
+                                            {
+                                                method: "post",
+                                                body: JSON.stringify({query: `mutation{deleteCalendrier(id: "${cal.Id}")}`}),
+                                                headers: {'Content-Type': 'application/json'}
+                                            }) 
+                                            const data = await result.json();
+                                            if(data.errors)
+                                            return setErrors(data.errors);
+                                            
+                                            console.log(data.data.deleteDivision);
+                                            return fetchDatas();
+                                            } catch (error) {
+                                                console.log(error);
+                                                return setErrors(error);
+                                            }
+                                        }}  
+                                        
+                                        className="fa fa-trash text-danger"></i>
+                                        <i className="fa fa-google"> mod</i>
+                                    </td>
+                            </tr>
+                        )
+                    })           
+                    
+                    ): (<tr><td rowSpan="4"  className="alert alert-danger">La list est vide </td></tr>)}
+                    </tbody>
+                    </table>
+                </div>    
             )}
         </div>
             <div className="col-md-4">
