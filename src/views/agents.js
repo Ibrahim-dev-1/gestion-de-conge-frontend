@@ -13,6 +13,7 @@ const Agents = () => {
     const [vagues, setVague] = React.useState([]);
     const [agents, setAgent] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
+    const [disableBtn, setDisableBtn] = React.useState(false);
     const [agentChoises, setAgentChoise ] = React.useState([]);
     const requestBody = {
         query: `query{ agents{ 
@@ -117,6 +118,8 @@ const Agents = () => {
 
     // handle check 
     const handleCheck = (ev) => {
+        if(agentChoises.length > 0)
+            setDisableBtn(!disableBtn);
         if(ev.target.checked){
             return setAgentChoise([...agentChoises, {name: ev.target.name, id: ev.target.id }]);
         }
@@ -125,6 +128,14 @@ const Agents = () => {
         }))
     }
 
+    // handle envoie des infomations de vague
+    const handleEnvoyeVague = () => {
+        if(agentChoises.length > 0 && vagueRef.current.value !== "null"){
+            return console.log("cool")
+        }
+
+        return console.log("on doit désactiver le boutton ")
+    }
 
     useEffect(function(){
         fetchData();
