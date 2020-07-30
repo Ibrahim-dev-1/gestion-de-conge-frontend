@@ -118,8 +118,9 @@ const Agents = () => {
 
     // handle check 
     const handleCheck = (ev) => {
-        if(agentChoises.length > 0)
+        if(agentChoises.length > 0 && nomVague !== "null")
             setDisableBtn(!disableBtn);
+            
         if(ev.target.checked){
             return setAgentChoise([...agentChoises, {name: ev.target.name, id: ev.target.id }]);
         }
@@ -130,13 +131,37 @@ const Agents = () => {
 
     // handle envoie des infomations de vague
     const handleEnvoyeVague = () => {
-        if(agentChoises.length > 0 && vagueRef.current.value !== "null"){
-            return console.log("cool")
+        if(agentChoises.length > 0 && nomVague !== "null"){
+            return fetch('/',{
+                method: 'POST',
+                body:JSON.stringify({
+                    query: ` mutation{ addAgents(calendrierId: "${vagueRef.current.value}" , agents: ${agentChoises} ) }`
+                }),
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer '+ sessionStorage.getItem('token')
+                }
+            }).then(function(response){
+                return response.json();
+            }).then(function(data){
+                if(data.errors)
+                    throw data.errors;
+                console.log(data.data);
+                setAgentChoise([]);
+                return createNotification("Ajout", "success", "Ajouts des agents au calendrier à été un success..","top-right" );
+            }).catch(function(errors){
+                if(errors.length > 0 ){
+                    return errors.map(function(err){
+                        return createNotification("Recherche", "danger", err.message,"top-left" );
+                    })
+                }
+                return ;
+            })
         }
-
         return console.log("on doit désactiver le boutton ")
     }
 
+   
     useEffect(function(){
         fetchData();
         fetchCalendrier();
@@ -144,7 +169,7 @@ const Agents = () => {
 
 
     return(
-       <React.Fragment>{console.log(agentChoises)}
+       <React.Fragment>
             <div className="container">
             <Notification />
                 <h3 className="text-center font-weight-bold">List des Agents </h3>
@@ -226,8 +251,10 @@ const Agents = () => {
                         </div>
                     </div>
                     <div className="d-flex justify-content-center border rounded p-3">
-                        <button className="btn btn-danger mr-2 btn-lg"> Annulez tous l'opération</button >
-                        <button onClick={handleEnvoyeVague} className="btn btn-outline-success btn-lg">Envoyé les agents dans la vague</button >
+                        <button onClick={function(){ setAgentChoise([]); return fetchData(); }} className="btn btn-danger mr-2 btn-lg"> Annulez tous l'opération</button >
+                        <button onClick={handleEnvoyeVague} className="btn btn-outline-success btn-lg">
+                            Envoyé les agents dans la vague
+                        </button >
                     </div >
 
                 </div>
