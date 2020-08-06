@@ -25,7 +25,9 @@ const DetailsAgent = (props) => {
         createdAt: '',
         updatedAt: '',
     })
-
+    
+    useEffect(() => {
+        // fetchDatas fonction to load all agents from databases
     const fetchDatas = async () => {
         try {
             const response = await fetch('/', {
@@ -56,14 +58,32 @@ const DetailsAgent = (props) => {
         }
     }
 
-    useEffect(() => {
         fetchDatas();
-        console.log(agent);
-    }, []);
-    return <div>
-                Tous les informations sur un agents
+    }, [paramsId]);
 
-        </div>
+    return <div className="container">
+
+                <h3 className="font-weight-bold text-center mb-4">tous les infos sur un agents </h3>
+                <div className="row">
+                    <div className="col-md-6">
+                        <div className="d-flex justify-content-around">
+                            <div className="">
+                                image d'une persone
+                            </div>
+                            <div className="p-2 d-flex border rounded bg-light flex-column">
+                                <p className="text-primary">nom: {agent.nom}</p>
+                                <p className="">prenom: {agent.prenom}</p>
+                                <p className="">sexe: {agent.sexe}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-6">
+                        <ul className="list-group">
+                           list items
+                        </ul>
+                    </div>
+                </div>
+            </div>
 }
 
 export default DetailsAgent;

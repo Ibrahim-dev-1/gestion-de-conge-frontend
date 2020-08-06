@@ -48,7 +48,7 @@ const Agents = () => {
         }).catch(function(errors){
             if(errors.length > 0 ){
                 return errors.map(function(err){
-                    return createNotification("Recherche", "danger", err.message,"top-right" );
+                    return createNotification("Recherche", "danger", err.message,"top-left" );
                 })
             }
             return ;
@@ -69,17 +69,19 @@ const Agents = () => {
                 'Authorization':'Bearer '+ sessionStorage.getItem("token")
             }
         }).then(function(response){
+            console.log(sessionStorage.getItem("token"))
             return response.json();
         }).then(function(data){
             if(data.errors){
                 throw data.errors;
             }
-            return createNotification("Suppression", "success", "Suppression réuissit....", "top-right");
+            fetchData();
+            return createNotification("Suppression", "success", "Suppression réuissit....", "top-left");
         }).catch(function(errs){
             console.log(errs);
             if(errs.length > 0 ){
                 return errs.map(function(err){
-                    return createNotification("Suppression", "danger", err.message,"top-right");
+                    return createNotification("Suppression", "danger", err.message,"top-left");
                 })
             }
         })
@@ -110,7 +112,7 @@ const Agents = () => {
             setLoading(false);
             if(errors.length > 0){
                 errors.map(function(err){
-                    return createNotification("Listes Agents", "danger", err.message,"top-right");
+                    return createNotification("Listes Agents", "danger", err.message,"top-left");
                 })
             }
         }
@@ -132,10 +134,11 @@ const Agents = () => {
     // handle envoie des infomations de vague
     const handleEnvoyeVague = () => {
         if(agentChoises.length > 0 && nomVague !== "null"){
+            const tableauAgentsID = agentChoises.map(function(object){ return object.id; })
             return fetch('/',{
                 method: 'POST',
                 body:JSON.stringify({
-                    query: ` mutation{ addAgents(calendrierId: "${vagueRef.current.value}" , agents: ${agentChoises} ) }`
+                    query: ` mutation{ addAgents(calendrierId: "${vagueRef.current.value}" , agents: "${tableauAgentsID}" ) }`
                 }),
                 headers: {
                     'Content-Type': 'Application/json',
@@ -146,9 +149,8 @@ const Agents = () => {
             }).then(function(data){
                 if(data.errors)
                     throw data.errors;
-                console.log(data.data);
                 setAgentChoise([]);
-                return createNotification("Ajout", "success", "Ajouts des agents au calendrier à été un success..","top-right" );
+                return createNotification("Ajout", "success", data.data.addAgents,"top-left" );
             }).catch(function(errors){
                 if(errors.length > 0 ){
                     return errors.map(function(err){
@@ -173,7 +175,7 @@ const Agents = () => {
             <div className="container">
             <Notification />
                 <h3 className="text-center font-weight-bold">List des Agents </h3>
-                {loading ? (<p style={{ margin:"0px auto"}} className="lds-dual-ring"></p>):(
+                {loading ? (<div style={{ margin:"0px auto"}} className="lds-dual-ring"></div>):(
                     <table id="pagingTable" className="table table-bordered table-hover">
                     <thead>
                     <tr>
@@ -203,13 +205,8 @@ const Agents = () => {
                                 <td>{agent.sexe}</td>
                                 <td className="d-flex justify-content-around"> 
                                     <Link className="btn btn-outline-info btn-sm" to={"/dashboard/agentDetails/" + agent.Id }><i className="fa fa-eye mr-2"aria-hidden="true"></i>détails</Link>
-                                    <button className="btn btn-outline-danger btn-sm">
-                                        <i 
-                                                onClick={handleDeteleClick}
-                                                className="fa fa-trash mr-2"
-                                                aria-hidden="true"
-                                                id={agent.Id}
-                                            ></i>
+                                    <button onClick={handleDeteleClick} id={agent.Id} className="btn btn-outline-danger btn-sm">
+                                        <i className="fa fa-trash mr-2" aria-hidden="true"></i>
                                             Supprimer
                                     </button>
                                 </td>

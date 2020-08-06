@@ -4,6 +4,7 @@ import Configuration from './views/configuration';
 import DetailsStatus from './views/detailsStatus';
 import DetailsDivision from './views/detailsDivision';
 import DetailsTypeConge from './views/detailsTypeConge';
+import GestionDemande from './views/gestionDemande';
 import DetailsAgent from './views/detailsAgent';
 import Agents from './views/agents';
 import Agent from './views/agent';
@@ -18,6 +19,7 @@ const Routes = (props) =>{
                 <Route path="/dashboard/detailsStatus" component={DetailsStatus} />
                 <Route path="/dashboard/detailsDivision" component={DetailsDivision} />
                 <Route path="/dashboard/detailsTypeConge" component={DetailsTypeConge} />
+                <Route path="/dashboard/conge/gestionDemande" component={GestionDemande} />
                 <Route path="/dashboard/agentDetails/:id" component={DetailsAgent} />
             </React.Fragment>
     )

@@ -66,11 +66,11 @@ const Agent = () => {
             setAgent({nom: '',prenom:'',sexe:'',fonction:'',situationMatrimoniale:'',telephone:'', divisionId:'', statusId:'',
         dateNaissance:'',dateEmbauche:'', email:''});
             return createNotification("Enregistrement", 
-            "success","Enrégistrement réuissit","top-right" );
+            "success","Enrégistrement réuissit","top-left" );
         }).catch(function(errs){
             if(errs.length){
                 errs.map(function(err){
-                    return createNotification("Error d'envoie","danger",err.message,"top-right");
+                    return createNotification("Error d'envoie","danger",err.message,"top-left");
                 })
             }
             
@@ -98,7 +98,7 @@ const Agent = () => {
                 })
                 const data = await response.json();
                 if(data.errors){console.log(data.errors); setDivision([]); setLoading(false); return createNotification("Erreur Fetch", 
-                "danger","Erreur recherche des divisions","top-right" );}
+                "danger","Erreur recherche des divisions","top-left" );}
                 setDivision(data.data.divisions);
                 setTimeout(function(){ return setLoading(false)}, 2000);
             } catch (error) {
@@ -106,7 +106,7 @@ const Agent = () => {
                 setLoading(false);
                 console.log(error.message)
                 return createNotification("Erreur d'enregistrement", 
-                "danger","Erreur d'envoie" ,"top-right" );
+                "danger","Erreur d'envoie" ,"top-left" );
             }
         }
         
@@ -134,7 +134,7 @@ const Agent = () => {
                     setLoading(false);
                     setStatus([])
                 return createNotification("Erreur de Fetch", 
-                "danger","Erreur des status dans la base de donné","top-right" );
+                "danger","Erreur des status dans la base de donné","top-left" );
                     
                 }
             }
@@ -168,7 +168,9 @@ const Agent = () => {
                                 <input 
                                     type="text" 
                                     className="form-control" 
-                                    id="prenom" 
+                                    id="prenom"
+
+                                    
                                     value={agent.prenom}
                                     onChange={function(ev){ return setAgent({...agent,prenom: ev.target.value})}} 
                                     placeholder="Entrez le prenom(s)" 

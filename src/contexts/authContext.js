@@ -8,9 +8,11 @@ let AuthDispatchContext = createContext();
 // resolver
 const rootReducer = (state, action ) => {
     switch(action.type){
-        case "LOGIN_SUCCESS":
-            console.log(action.payload);
-            return {...state, isAuthentication: true, grade: action.payload.grade, token : action.payload.token };
+        case "LOGIN":
+            return {...state,isAuthentication: true , grade: action.payload.grade, token : action.payload.token };
+        
+        case "LOGOUT":
+            return {isAuthentication: false, userId: '', grade: '', token :'' };
         
         default:
             return state;
@@ -57,6 +59,14 @@ const useAuthDispatch = () => {
     return dispatch;
 }
 
+const logout = (dispatch) => {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("isAuthentication");
+    sessionStorage.removeItem("grade");
+    sessionStorage.removeItem("userId");
+    return dispatch({type:"LOGOUT"});
+}
+
 const login = (dispatch , AuthData) => {
     fetch("/",{
         method: "POST",
@@ -81,7 +91,7 @@ const login = (dispatch , AuthData) => {
         sessionStorage.setItem("isAuthentication", true);
         sessionStorage.setItem("token", data.data.login.token);
         sessionStorage.setItem("grade", data.data.login.grade);
-        return dispatch({ type: "LOGIN_SUCCESS" , payload: data.data.login })
+        return dispatch({ type: "LOGIN" , payload: data.data.login })
     }).catch(function(errs){
         sessionStorage.removeItem("isAuthentication");
         sessionStorage.removeItem("token");
@@ -96,6 +106,7 @@ const login = (dispatch , AuthData) => {
 export {
     AuthenticationProvider,
     login,
+    logout,
     useAuthState,
     useAuthDispatch,
 }

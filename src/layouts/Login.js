@@ -85,7 +85,7 @@ const Login = ()  =>{
                         <Link to="#">J'ai oublié mon mot de passe </Link>
                         </p>
                         <p className="mb-0">
-                            <Link data-target="#newCompteCreate" data-toggle="modal" className="text-center text-light">Créez un compte</Link>
+                            <Link data-target="#newCompteCreate" to="#" data-toggle="modal" className="text-center text-light">Créez un compte</Link>
                         </p>
             </div>
        

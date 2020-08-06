@@ -9,14 +9,23 @@ body{
     background: #fff;
 }
 
-li.kratos-item{
+.kratos-item{
     transition:all 0.4s ease-in-out;
+}
+.kratos-item a{
+    color: #000;
+    font-weight: bold;    
+    transition:all 0.4s ease-in-out;
+}
+.kratos-item a:hover{
+    color: rgb(0, 207, 104);
 }
 
 li.kratos-item:hover{
-    background: #00000080;
-    border-radius: 3px;
-    box-shadow: 0px 5px 10px black;
+    background: rgb(219, 255, 252);
+    border-radius: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 82, 41, 0.301);
+    transform: translate3d(4px,4px,4px);
 }
 
 .kratos-content-wrapper{
@@ -49,4 +58,8 @@ td{
 
 .kratosInput{
     background: #202020;
+}
+
+.kratosSidebar{
+    background: #eeeeee;
 }

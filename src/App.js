@@ -22,6 +22,7 @@ const App = () => {
                     sessionStorage.getItem("token")
                 ){
                     return <Redirect 
+                            exact
                             to={{
                                 pathname: "/",
                                 state: {
@@ -41,7 +42,7 @@ const App = () => {
             {...rests}
             render={function(props){
                 // s'il s'agit d'un chef de division ou le superadmin ou le grh on le laisse passé
-                if( sessionStorage.getItem("isAuthentication") && sessionStorage.getItem("token") && 
+                if(sessionStorage.getItem("isAuthentication") && sessionStorage.getItem("token") && 
                 (sessionStorage.getItem("grade") === "SUPERADMIN" || 
                 sessionStorage.getItem("grade") === "GRH" || 
                 sessionStorage.getItem("grade") === "CHEF DIVISION")){
@@ -50,6 +51,7 @@ const App = () => {
                     console.log("redirection sur la page de login")
                 // si aucune de ses informations n'est correct alors on ramène la personne sur la page de login
                 return <Redirect 
+                        exact
                         to={{
                             pathname: "/login",
                             state: {
@@ -90,7 +92,7 @@ const App = () => {
                 <Redirect exact from="/" to="/dashboard" />
                 <PrivateRoute path="/dashboard" component={Dashboard} />
                 <PublicRoute path="/login" component={Login} />
-                <CongeRoute path="/congeLayout" component={CongeLayout} />
+                <CongeRoute  path="/conge/demande" component={CongeLayout} />
                 <Route component={PageNotFound} />
             </Switch>
         </Router>

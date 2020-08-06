@@ -12,7 +12,7 @@ export function createNotification(title,type,message,container){
         animationIn:["animated", "fadeIn"],
         animationOut:["animated", "fadeOut"],
         dismiss: {
-            duration: 6000,
+            duration: 10000,
             onScreen: true
         }
 
