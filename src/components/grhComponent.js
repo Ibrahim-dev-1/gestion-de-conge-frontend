@@ -15,15 +15,15 @@ const GrhComponent = () => {
         if(conge.length > 0){
             return conge.map(function(demande){
                 if(demande.status === "en Attente"){
-                    setDemandeEnAttentes([...demandeEnAttentes, demande]);
+                    return setDemandeEnAttentes([...demandeEnAttentes, demande]);
                 }
                 if(demande.status === "Refuser"){
-                    setDemandeRefuser([...demandeRefuser, demande]);
+                    return setDemandeRefuser([...demandeRefuser, demande]);
                 }
                 if(demande.status === "Accepter"){
-                    setDemandeAccepter([...demandeAccepter, demande]);
+                    return setDemandeAccepter([...demandeAccepter, demande]);
                 }
-               
+               return;
             })
         }
         return console.log("la demande de congé est vide ")
@@ -133,17 +133,18 @@ const GrhComponent = () => {
             </Link>
                 
                 <div className="collapse" id="demandeAttenteCollapse">
-                    <ul className="list-group"  style={{maxWidth: "800px", margin: "1rem auto"}}>
+                    <ul className="list-group"  style={{maxWidth: "850px", margin: "1rem auto"}}>
                             
                         {demandeEnAttentes.length > 0 ? demandeEnAttentes.map(function(attente){
                             return <li key={attente.Id} className="list-group-item d-flex justify-content-around">
-                                  <span className="font-weight-bold">{attente.dateDebut}</span>
+                                  <span className="font-weight-bold ">{attente.dateDebut}</span>
                                   <span className="font-weight-bold">{attente.dateFin}</span>
                                   <span className="font-weight-bold bg-success text-center rounded">{attente.status}</span>
                                   <span className="text-muted">{attente.commentaire}</span>
-                                  <span className="text-muted">{attente.agent.nom}</span>
-                                  <span className="text-muted">{attente.agent.prenom}</span>
-                                  <span className="text-muted">{attente.agent.email}</span>
+                                  <span >{attente.agent.nom}</span>
+                                  <span >{attente.agent.prenom}</span>
+                                  <span className="text-danger">{attente.agent.email}</span>
+                                  <span className="text-warning"> {attente.agent.isChefAuthorized}</span>
                                   <span className="text-muted  text-center">
                                     <button className="btn btn-outline-primary" id={attente.Id} onClick={handleAccept}>Accepter</button>
                                  </span>
@@ -172,6 +173,9 @@ const GrhComponent = () => {
                             <th>nom</th>
                             <th>prenom</th>
                             <th>email</th>
+                            <th>telephone</th>
+                            <th>fonction</th>
+                            <th>Authorization du chef</th>
                             <th>Action</th>
                             </tr>
                         </thead>
@@ -180,19 +184,20 @@ const GrhComponent = () => {
                             demandeAccepter.map(function(demande){
                                 return (
                                     <tr key={demande.Id}>
-                                        <td>{demande.Id}</td>
                                         <td className="font-weight-bold">{demande.dateDebut}</td>
                                         <td>{demande.dateFin}</td>
-                                        <td>{demande.status}</td>
+                                        <td className="font-weight-bold"><span className="bg-success rounded p-1">{demande.status}</span></td>
                                         <td>{demande.commentaire}</td>
-                                        <td className="text-primary">{demande.agent.nom}</td>
-                                        <td className="text-primary">{demande.agent.prenom}</td>
-                                        <td className="text-muted">{demande.agent.email}</td>
+                                        <td className="font-weight-bold text-primary">{demande.agent.nom}</td>
+                                        <td className="font-weight-bold text-primary">{demande.agent.prenom}</td>
+                                        <td className="text-danger">{demande.agent.email}</td>
+                                        <td className="text-success">{demande.agent.telephone}</td>
+                                        <td>{demande.agent.fonction}</td>
+                                        <td><span className="bg-warning">{demande.agent.isChefAuthorized}</span></td>
                                         <td>
-                                        <button className="btn btn-primary"> Modifier
-                                        </button>
+                                            <button className="btn btn-primary"> Modifier </button>
                                         </td>
-                                        
+                                
                                     </tr>
                                 )
                             })           
@@ -206,14 +211,17 @@ const GrhComponent = () => {
                     <table className="table table-bordered table-hover table-responsive">
                         <thead>
                             <tr>
-                            <th>dateDebut</th>
-                            <th>dateFin</th>
-                            <th>status</th>
-                            <th>commentaire</th>
-                            <th>nom</th>
-                            <th>prenom</th>
-                            <th>email</th>
-                            <th>Actions</th>
+                            <th className="font-weight-bold">dateDebut</th>
+                            <th className="font-weight-bold">dateFin</th>
+                            <th className="font-weight-bold">status</th>
+                            <th className="font-weight-bold">commentaire</th>
+                            <th className="font-weight-bold">nom</th>
+                            <th className="font-weight-bold">prenom</th>
+                            <th className="font-weight-bold">email</th>
+                            <th className="font-weight-bold">telephone</th>
+                            <th className="font-weight-bold">fonction</th>
+                            <th className="font-weight-bold">Authorization du Chef </th>
+                            <th className="font-weight-bold">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -223,11 +231,14 @@ const GrhComponent = () => {
                                     <tr key={demande.Id}>
                                         <td className="font-weight-bold">{demande.dateDebut}</td>
                                         <td>{demande.dateFin}</td>
-                                        <td className="font-weight-bold"><span className="bg-danger p-1">{demande.status}</span></td>
+                                        <td className="font-weight-bold"><span className="bg-danger rounded p-1">{demande.status}</span></td>
                                         <td>{demande.commentaire}</td>
                                         <td className="font-weight-bold text-primary">{demande.agent.nom}</td>
                                         <td className="font-weight-bold text-primary">{demande.agent.prenom}</td>
-                                        <td className="text-muted">{demande.agent.email}</td>
+                                        <td className="text-danger">{demande.agent.email}</td>
+                                        <td className="text-success">{demande.agent.telephone}</td>
+                                        <td>{demande.agent.fonction}</td>
+                                        <td><span className="bg-warning rounded border p-1">{demande.agent.isChefAuthorized}</span></td>
                                         <td>
                                         <button className="btn btn-primary"> Modifier </button>
                                     </td>

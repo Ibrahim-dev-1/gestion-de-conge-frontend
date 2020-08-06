@@ -34,7 +34,9 @@ const DetailsAgent = (props) => {
                 method: 'POST',
                 body: JSON.stringify({
                     query: ` query{findAgent(id: "${paramsId.id}"){
-                        nom prenom sexe fonction situationMatrimoniale
+                        nom prenom sexe fonction situationMatrimoniale email
+                        dateNaissance dateEmbauche  telephone 
+                        createdAt updatedAt
                     }}`
                 }),
                 headers: {
@@ -65,15 +67,32 @@ const DetailsAgent = (props) => {
 
                 <h3 className="font-weight-bold text-center mb-4">tous les infos sur un agents </h3>
                 <div className="row">
-                    <div className="col-md-6">
-                        <div className="d-flex justify-content-around">
-                            <div className="">
+                    <div className="col-md-6 border rounded shadow">
+                        <div className="row p-4">
+                            <div className="col-md-4">
                                 image d'une persone
                             </div>
-                            <div className="p-2 d-flex border rounded bg-light flex-column">
-                                <p className="text-primary">nom: {agent.nom}</p>
-                                <p className="">prenom: {agent.prenom}</p>
-                                <p className="">sexe: {agent.sexe}</p>
+                            <div className="col-md-8 p-2">
+                                <p className="font-weight-bold text-info">informations sur la personnalité </p> 
+                                <div className="d-flex justify-content-between">
+                                    <h5 className="font-weight-bold">Nom: {agent.prenom}</h5> 
+                                    <h5 className="font-weight-bold">Prenom: {agent.prenom}</h5>
+                                </div>
+                                <h5 className="text-muted "> <span className="font-weight-bold text-dark mr-4">Email:</span> {agent.email}</h5>
+                                <h5 className=""> <span className="font-weight-bold mr-4">DateNaissance:</span> {agent.dateNaissance}</h5>
+                                <h5 className=""> <span className="font-weight-bold mr-4">Situation Matrimoniale:</span> {agent.situationMatrimoniale}</h5>
+                                <h5 className=""> <span className="font-weight-bold mr-4">Fonction:</span> {agent.fonction}</h5>
+                                <h5 className=""> <span className="font-weight-bold mr-4">DateEmbauche:</span> {agent.dateEmbauche}</h5>
+                                <hr/>  
+                                <p className="font-weight-bold text-info">informations sur sa division </p> 
+                                <h5 className=""> <span className="font-weight-bold mr-4">DateEmbauche:</span> {agent.dateEmbauche}</h5>
+                                <hr/>  
+                                <p className="font-weight-bold text-info">informations sur ses demandes de congés </p> 
+                                <h5 className=""> <span className="font-weight-bold mr-4">DateEmbauche:</span> {agent.dateEmbauche}</h5>
+                                <hr/>  
+                                <p className="font-weight-bold text-info">informations sur son status dans l'entreprise </p> 
+                                <h5 className=""> <span className="font-weight-bold mr-4">DateEmbauche:</span> {agent.dateEmbauche}</h5>
+                                
                             </div>
                         </div>
                     </div>

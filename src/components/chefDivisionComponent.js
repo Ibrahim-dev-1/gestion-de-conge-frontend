@@ -64,7 +64,7 @@ const ChefDivisionComponent = () => {
         return fetch('/', {
             method: 'POST',
             body: JSON.stringify({ query: ` mutation{ 
-                setStatus(id: "${ev.target.id}", name: "Accepter" ) 
+                setStatus(id: "${ev.target.id}", name: "en Attente" ) 
                 setChefAuthorization(id: "${ev.target.id}" , authorized: true )}`}) ,
             headers: {
                 'Content-Type': 'Application/json',
@@ -76,7 +76,7 @@ const ChefDivisionComponent = () => {
             if(data.errors)
                 throw data.errors;
             fetchDemandeFromAgentsInDivision()
-            return createNotification("Demande Accepter",'La Demande à été accepter', 'success', 'top-left');
+            return createNotification('Demande Accepter','La Demande à été accepter', 'success', 'top-left');
         }).catch(function(errors){
             if(errors.length > 0){
                 errors.map(function(err){
@@ -87,34 +87,34 @@ const ChefDivisionComponent = () => {
         
     }
     
-    const handleRefuse = (ev) => {
-        return  fetch('/', {
-            method: 'POST',
-            body: JSON.stringify({ query: ` mutation{ 
-                setStatus(id: "${ev.target.id}", name: "Refuser" )
-                setChefAuthorization(id: "${ev.target.id}" , authorized: false )}`}) ,
-            headers: {
-                'Content-Type': 'Application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem("token"),
-            }
-        }).then(function(response){
-            return response.json();
-        }).then(function(data){
-            const id = ev.target.value;
+    const handleRefuse = async (ev) => {
+        try {
+            const response = await fetch('/', {
+                method: 'POST',
+                body: JSON.stringify({ query: ` mutation{ 
+                    setStatus(id: "${ev.target.id}", name: "Refuser" )
+                    setChefAuthorization(id: "${ev.target.id}" , authorized: false )}`}) ,
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'Authorization': 'Bearer ' + sessionStorage.getItem("token"),
+                }
+            })
+            const  data = await response.json();
+            
             if(data.errors)
                 throw data.errors;
-            
            
-            fetchDemandeFromAgentsInDivision();
-            return createNotification("Demande Refuser",'La Demande à été Refusez', 'success', 'top-left');
-        }).catch(function(errors){
+            return fetchDemandeFromAgentsInDivision();
+        
+        } catch (errors) {
+            
             if(errors.length > 0){
                 errors.map(function(err){
                     return createNotification("Error", err.message, 'danger', 'top-left');
                 })
             }
-        })
-
+        }
+        
     }
 
     return <React.Fragment>
@@ -155,7 +155,7 @@ const ChefDivisionComponent = () => {
                 </div>
             </div>
             
-                <div className="p-3">
+                <div className="p-3 border shadow rounded">
                     <h4 className="font-weight-bold text-center">Liste des demandes de congé refuser</h4>
                     <table className="table table-bordered table-hover">
                         <thead>
